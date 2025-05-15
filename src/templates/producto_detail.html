@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Detalle Producto - ComercioTech{% endblock %}
+{% block content %}
+<h2>Detalle Producto</h2>
+<ul class="list-group">
+  <li class="list-group-item"><strong>ID:</strong> {{ producto._id }}</li>
+  <li class="list-group-item"><strong>SKU:</strong> {{ producto.sku }}</li>
+  <li class="list-group-item"><strong>Nombre:</strong> {{ producto.nombre }}</li>
+  <li class="list-group-item"><strong>Precio:</strong> ${{ producto.precio }}</li>
+</ul>
+<a href="{{ url_for('list_productos') }}" class="btn btn-secondary mt-3">Volver</a>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Detalle Cliente - ComercioTech{% endblock %}
+{% block content %}
+<h2>Detalle Cliente</h2>
+<ul class="list-group">
+  <li class="list-group-item"><strong>ID:</strong> {{ cliente._id }}</li>
+  <li class="list-group-item"><strong>Nombre:</strong> {{ cliente.nombre }}</li>
+  <li class="list-group-item"><strong>Email:</strong> {{ cliente.email }}</li>
+</ul>
+<a href="{{ url_for('list_clientes') }}" class="btn btn-secondary mt-3">Volver</a>
+{% endblock %}

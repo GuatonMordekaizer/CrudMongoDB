@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}{% if producto %}Editar Producto{% else %}Nuevo Producto{% endif %} - ComercioTech{% endblock %}
+{% block content %}
+<h2>{% if producto %}Editar{% else %}Nuevo{% endif %} Producto</h2>
+<form method="post">
+  <div class="mb-3">
+    <label class="form-label">SKU</label>
+    <input name="sku" class="form-control" value="{{ producto.sku if producto }}" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Nombre</label>
+    <input name="nombre" class="form-control" value="{{ producto.nombre if producto }}" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Precio</label>
+    <input name="precio" type="number" step="0.01" class="form-control" value="{{ producto.precio if producto }}" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Guardar</button>
+  <a href="{{ url_for('list_productos') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

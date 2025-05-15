@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Clientes - ComercioTech{% endblock %}
+{% block content %}
+<h2>Clientes <a class="btn btn-success float-end" href="{{ url_for('new_cliente') }}">Nuevo</a></h2>
+<form method="get" class="mb-3">
+  <div class="input-group">
+    <input name="q" value="{{ q }}" class="form-control" placeholder="Buscar...">
+    <button class="btn btn-outline-secondary">Buscar</button>
+  </div>
+</form>
+<table class="table table-striped">
+  <thead><tr><th>ID</th><th>Nombre</th><th>Email</th><th>Acciones</th></tr></thead>
+  <tbody>
+  {% for c in clientes %}
+  <tr>
+    <td><a href="{{ url_for('detail_cliente', id=c._id) }}">{{ c._id }}</a></td>
+    <td>{{ c.nombre }}</td>
+    <td>{{ c.email }}</td>
+    <td>
+      <a class="btn btn-sm btn-primary" href="{{ url_for('edit_cliente', id=c._id) }}">Editar</a>
+      <form method="post" action="{{ url_for('delete_cliente', id=c._id) }}" class="d-inline">
+        <button class="btn btn-sm btn-danger" onclick="return confirm('¿Borrar?')">Borrar</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

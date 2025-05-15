@@ -1,0 +1,65 @@
+version: "3.8"
+
+services:
+
+  mongo:
+    image: mongo:6.0
+    container_name: mongo_comercitech
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: AdminP@ssw0rd!
+    volumes:
+      - mongo_data:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "27017:27017"
+    command: >
+      --auth
+      --bind_ip_all
+      --setParameter authenticationMechanisms=SCRAM-SHA-1,SCRAM-SHA-256
+    sysctls:
+      net.core.somaxconn: 1024
+      net.ipv4.ip_local_port_range: "1024 65535"
+      net.ipv4.tcp_fin_timeout: 15
+      net.ipv4.tcp_tw_reuse: 1
+    ulimits:
+      nofile:
+        soft: 64000
+        hard: 64000
+      nproc:
+        soft: 64000
+        hard: 64000
+
+  app:
+    build: .
+    container_name: api_comercitech
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    working_dir: /app
+    stdin_open: true    # keep STDIN open for interactive menu
+    tty: true           # allocate a pseudo-TTY
+    environment:
+      MONGO_USER:     admin
+      MONGO_PASS:     AdminP@ssw0rd!
+      MONGO_HOST:     mongo
+      MONGO_PORT:     "27017"
+      MONGO_DB:       comercitech
+      TZ:             America/Santiago
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./src:/app/src
+      - ./tests:/app/tests
+      - ./requirements.txt:/app/requirements.txt
+    command: >
+      bash -lc "
+        # Run tests but don’t block if none
+        pytest --maxfail=1 --disable-warnings -q /app/tests || true &&
+        # Start interactive menu
+        exec python3 /app/src/main.py
+      "
+
+volumes:
+  mongo_data:

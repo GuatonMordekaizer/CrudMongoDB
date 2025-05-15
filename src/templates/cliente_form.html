@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}{% if cliente %}Editar Cliente{% else %}Nuevo Cliente{% endif %} - ComercioTech{% endblock %}
+{% block content %}
+<h2>{% if cliente %}Editar{% else %}Nuevo{% endif %} Cliente</h2>
+<form method="post">
+  <div class="mb-3">
+    <label class="form-label">Nombre</label>
+    <input name="nombre" class="form-control" value="{{ cliente.nombre if cliente }}" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Email</label>
+    <input name="email" type="email" class="form-control" value="{{ cliente.email if cliente }}" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Guardar</button>
+  <a href="{{ url_for('list_clientes') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

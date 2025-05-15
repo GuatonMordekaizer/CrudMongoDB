@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}{% if pedido %}Editar Pedido{% else %}Nuevo Pedido{% endif %} - ComercioTech{% endblock %}
+{% block content %}
+<h2>{% if pedido %}Editar{% else %}Nuevo{% endif %} Pedido</h2>
+<form method="post">
+  <div class="mb-3">
+    <label class="form-label">Cliente</label>
+    <select name="cliente" class="form-select">
+      {% for c in clientes %}
+      <option value="{{ c._id }}" {% if pedido and pedido.cliente_id == c._id %}selected{% endif %}>{{ c.nombre }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  {% if not pedido %}
+  <div class="mb-3">
+    <label class="form-label">Items (sku:cantidad, ...)</label>
+    <input name="items" class="form-control" placeholder="e.g. ABC123:2, XYZ:5" required>
+  </div>
+  {% endif %}
+  <div class="mb-3">
+    <label class="form-label">Estado</label>
+    <select name="estado" class="form-select">
+      {% for st in ['pendiente','enviado','entregado'] %}
+      <option value="{{ st }}" {% if pedido and pedido.estado == st %}selected{% endif %}>{{ st.capitalize() }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Guardar</button>
+  <a href="{{ url_for('list_pedidos') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

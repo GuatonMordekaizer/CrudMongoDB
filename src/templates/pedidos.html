@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Pedidos - ComercioTech{% endblock %}
+{% block content %}
+<h2>Pedidos <a class="btn btn-success float-end" href="{{ url_for('new_pedido') }}">Nuevo</a></h2>
+<table class="table table-striped">
+  <thead><tr><th>ID</th><th>Cliente</th><th>Items</th><th>Estado</th><th>Acciones</th></tr></thead>
+  <tbody>
+  {% for o in pedidos %}
+  <tr>
+    <td><a href="{{ url_for('detail_pedido', id=o._id) }}">{{ o._id }}</a></td>
+    <td>{{ o.cliente_id }}</td>
+    <td>{{ o.items }}</td>
+    <td>{{ o.estado }}</td>
+    <td>
+      <a class="btn btn-sm btn-primary" href="{{ url_for('edit_pedido', id=o._id) }}">Editar</a>
+      <form method="post" action="{{ url_for('delete_pedido', id=o._id) }}" class="d-inline">
+        <button class="btn btn-sm btn-danger" onclick="return confirm('¿Borrar?')">Borrar</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
